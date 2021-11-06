@@ -3,5 +3,5 @@ class Message < ApplicationRecord
   belongs_to :user
 
   validates :author, :message, 
-  presence: true
+  presence: {message:"Este campo es requerido"}
 end

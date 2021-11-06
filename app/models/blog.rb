@@ -1,5 +1,9 @@
 class Blog < ApplicationRecord
-validates :name, :description, 
-presence: true
+
+  has_many :post
+  has_many :owner
+
+  validates :name, :description, 
+  presence: {message:"Este campo es requerido"}
   
 end
