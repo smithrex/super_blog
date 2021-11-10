@@ -327,7 +327,7 @@ end
   m.save
 end
 
-puts "19 done"
+
 #Comprobacion
 #Contar el numero de Messages del usuario 3
 
@@ -352,3 +352,68 @@ end
 puts "Cantidad de Messages Usuario 4: #{us4.message.count}" #has_many
 puts Message.where(user: us4).count #belongs to
 puts "tarea 20 hecha"
+
+#Tarea 21Cambie el propietario de la 2 publicación para que sea el último usuario.
+
+#1 Buscar la publicacion 
+#2 Buscar el ultimo usuario 
+
+#Captura al segundo Post en la variable po2
+po2 = Post.all[0]
+puts "antes => #{po2.user.first_name}"
+#po2 = Post.all[1] #----> Post.all.first
+#Captura al ultimo usuario en la variable ulu 
+ulu = User.all.last
+
+#Actualizar usuario
+po2.user = ulu
+po2.save
+
+puts "despues =>#{po2.user.first_name}"
+puts "Tarea 21 Hecho"
+
+#Tarea 22 Cambie el contenido de la segunda publicación por algo diferente.
+
+#Capturar
+po2 = Post.all[1]
+po2.content = "Un nuevo contenido modificado"
+#po2.content = nil #va a saltar la validacion
+
+po2.save
+puts po2.errors.full_messages #Si arroja un array vacío, está correcto; si arroja contenido, no paso las validaciones#se debe hacer despues del .save, ya que así se asegura que se haya guardado el dato.
+
+puts "Content: #{po2.content}"
+puts "Tarea 22 Hecho"
+
+#Tarea 23 
+#Obtenga todos los blog que son propiedad del tercer usuario (haz que esto funcione con un simple Usuario.find(3).blogs).---> metodo has_many
+
+#User.find(3).owner #retorna todos los owner del usuario 3 ---cuando es un array, puedo usar .pluck para obtener un dato específico---ej. blog_id
+
+us3 = User.find(3)
+#us3 = User.where(first_name: "Usuario 3").first (version belongs_to)
+owners = us3.owner
+blogs_ids = owners.pluck(:blog_id)#relación inmediata
+#blogs_ids => [45, 3, 34]
+blogs = Blog.where(id: blogs_ids)#esto se puede filtrar e imprimir
+
+puts "Blogs del Usuario 3: #{blogs}"
+puts "tarea 23 hecha"
+
+#Tarea 24 Obtenga todas las publicaciones que fueron creadas por el tercer usuario.
+
+us3 = User.find(3)
+us3 = User.where(first_name: "Usuario 3").first
+
+puts us3.post #has_many
+puts Post.where(user: us3) #belongs_to
+
+puts "Tarea 24 hecha"
+
+#Tarea 25 Obtenga todos los mensajes escritos por el tercer usuario.
+us3 = User.find(3)
+us3 = User.where(first_name: "Usuario 3").first
+
+puts us3.message #has_many
+puts Message.where(user: us3) #belongs_to
+puts "tarea 25 hecho"
